@@ -27,13 +27,16 @@ Some classical algorithms require access to commercial solvers like CPLEX or GUR
 
 If you are using Conda to manage your Python packages, you can run the following commands to install pygmo, regardless of your operating system:
 
+```
 conda config --add channels conda-forge
 conda config --set channel_priority strict
 conda install pygmo
+```
 
 2. Using pip + Linux 
 
-If you are using pip to manage your Python packages on Linux, you can directly run `pip install pygmo` in your virtual environment. Note that conda is recommended to install pygmo instead of pip due to possible dependency conflicts.
+If you are using pip to manage your Python packages on Linux, you can directly run `pip install pygmo` in your virtual environment. 
+Note that conda is recommended to install pygmo instead of pip due to possible dependency conflicts.
 
 3. Installation from source
 
@@ -41,24 +44,29 @@ Make sure to have the libraries installed in your system as listed here: https:/
 
 Then, in the qamoo project folder, run the following commands to clone the pygmo repository:
 
+```
 git clone https://github.com/esa/pygmo2.git
 cd pygmo2
 mkdir build 
-cd build 
+cd build
+```
 
 Then, make sure you are in your virtual Python environment and install the library:
 
-On Unix-like systems:
+- on Unix-like systems:
 
+```
 cmake .. -DPYTHON_EXECUTABLE=$(which python3)
 make
 sudo make install
+```
 
-On Windows:
+- on Windows:
 
+```
 cmake .. -DPYTHON_EXECUTABLE=path/to/python/exe
 cmake --build .
 cmake --build . --target install
-
+```
 
 For a detailed installation guide, please refer to https://esa.github.io/pygmo2/install.html#installation-from-source.
