@@ -9,93 +9,84 @@ from qamoo.algorithms.qaoa import (
 )
 from qamoo.utils.utils import compute_hypervolume_progress
 from qiskit_aer import AerSimulator
+from project_utils import ProjectLogger
 
 def run_transfer_experiment():
-    # 1. Setup Backend (MPS is mandatory for 27q)
+    logger = ProjectLogger("Option_B_Transfer")
     backend = AerSimulator(method='matrix_product_state') 
     
     repo_root = os.getcwd() 
     data_path = os.path.join(repo_root, 'data') + '/'
 
-    # 2. Define The TARGET Problem (We want to solve Instance #1)
     target_problem = ProblemSpecification()
     target_problem.data_folder = data_path
     target_problem.num_qubits = 27
     target_problem.num_objectives = 3
-    target_problem.problem_id = 1 # Solving ID 1
+    target_problem.problem_id = 1
     target_problem.num_swap_layers = 0
 
-    # 3. Define Parameter Sources
-    # Source A: Transfer (Parameters from Instance #0) -> "Generalized Learning"
+    # Scenarios
     src_transfer = ProblemSpecification()
     src_transfer.data_folder = data_path
     src_transfer.num_qubits = 27
     src_transfer.num_objectives = 3
     src_transfer.problem_id = 0 
     
-    # Source B: Baseline (Parameters from Instance #1 itself) -> "Standard/Ideal"
-    # Note: In a real "from scratch" test, we wouldn't have these, but this 
-    # serves as our control group.
     src_baseline = target_problem 
 
     scenarios = {
-        "Transfer (Params from ID 0)": src_transfer,
-        "Baseline (Params from ID 1)": src_baseline
+        "Transfer_Learning": src_transfer,
+        "Baseline_Standard": src_baseline
     }
     
-    final_hvs = {}
+    final_data = {} # To store raw arrays
 
     for name, src_spec in scenarios.items():
-        print(f"\n=== Running Scenario: {name} ===")
+        logger.log(f"=== Running Scenario: {name} ===")
         
         config = QAOAConfig()
-        # CRITICAL: We load parameters from 'src_spec', but solve 'target_problem'
         config.parameter_file = src_spec.problem_folder + 'JuliQAOA_angles.json'
-        
         config.p = 1
-        config.num_samples = 20  # Reduced for speed
-        config.shots = 100       # Reduced for speed
+        config.num_samples = 20
+        config.shots = 100
         config.objective_weights_id = 0
         config.backend_name = "aer_simulator_mps"
-        # Unique ID to prevent folder collisions
         config.run_id = f"transfer_{src_spec.problem_id}_to_{target_problem.problem_id}"
-        config.problem = target_problem # Always solving the target
+        config.problem = target_problem
         
         try:
-            print(f"1. Preparing Circuits (Source: {src_spec.problem_id} -> Target: {target_problem.problem_id})...")
             prepare_qaoa_circuits(config, backend, overwrite_results=True)
-            
-            print("2. Transpiling...")
             transpile_qaoa_circuits_parametrized(config, backend)
-            
-            print("3. Executing...")
             batch_execute_qaoa_circuits_parametrized([config], backend)
             
-            # Analyze Hypervolume
-            steps = range(0, config.total_num_samples + 1, 5) # Frequent checks
+            steps = range(0, config.total_num_samples + 1, 5)
             compute_hypervolume_progress(target_problem.problem_folder, config.results_folder, steps)
             
             x, y = config.progress_x_y()
-            final_hvs[name] = y
-            print(f"-> Final HV: {max(y) if len(y)>0 else 0}")
+            final_data[name] = y
+            logger.log(f"-> {name} Max HV: {max(y) if len(y)>0 else 0}")
             
         except Exception as e:
-            print(f"Skipping {name} due to error: {e}")
+            logger.log(f"Error in {name}: {str(e)}")
 
-    # Plot Comparison
+    # Save Raw Data
+    logger.save_json("transfer_history.json", final_data)
+
+    # Plot
     plt.figure(figsize=(10,6))
-    for name, hv_history in final_hvs.items():
-        # x-axis is just steps
+    for name, hv_history in final_data.items():
         steps_x = range(0, len(hv_history) * 5, 5) 
         plt.plot(steps_x, hv_history, label=name, marker='o')
     
     plt.title("Option B: Transfer Learning Utility (27 Qubits)")
     plt.xlabel("Evaluation Samples")
-    plt.ylabel("Hypervolume (Solution Quality)")
+    plt.ylabel("Hypervolume")
     plt.legend()
     plt.grid(True)
-    plt.savefig("option_b_results.png")
-    print("Saved option_b_results.png")
+    
+    plot_path = os.path.join(logger.get_output_dir(), "option_b_plot.png")
+    plt.savefig(plot_path)
+    logger.log(f"Plot saved to {plot_path}")
 
 if __name__ == "__main__":
     run_transfer_experiment()

@@ -1,0 +1,12 @@
+2025-11-29 10:20:48,986 - INFO - Initialized experiment: Option_A_Noise
+2025-11-29 10:20:48,986 - INFO - Saving results to: /Users/hikimiwada/qamoo/final_results/Option_A_Noise_20251129_102048
+2025-11-29 10:20:48,986 - INFO - === Running with Noise Rate: 0.0 ===
+2025-11-29 10:20:50,561 - INFO - -> Noise: 0.0, Final HV: 1196020.1894250335
+2025-11-29 10:20:50,562 - INFO - === Running with Noise Rate: 0.0001 ===
+2025-11-29 10:20:53,624 - INFO - -> Noise: 0.0001, Final HV: 1199953.390556013
+2025-11-29 10:20:53,624 - INFO - === Running with Noise Rate: 0.0005 ===
+2025-11-29 10:20:56,763 - INFO - -> Noise: 0.0005, Final HV: 1202838.2181064247
+2025-11-29 10:20:56,763 - INFO - === Running with Noise Rate: 0.001 ===
+2025-11-29 10:20:59,809 - INFO - -> Noise: 0.001, Final HV: 1216585.3104979987
+2025-11-29 10:20:59,809 - INFO - Data saved to noise_results.json
+2025-11-29 10:21:00,214 - INFO - Plot saved to /Users/hikimiwada/qamoo/final_results/Option_A_Noise_20251129_102048/option_a_plot.png

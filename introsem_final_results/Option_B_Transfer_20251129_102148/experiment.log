@@ -1,0 +1,8 @@
+2025-11-29 10:21:48,719 - INFO - Initialized experiment: Option_B_Transfer
+2025-11-29 10:21:48,719 - INFO - Saving results to: /Users/hikimiwada/qamoo/final_results/Option_B_Transfer_20251129_102148
+2025-11-29 10:21:48,719 - INFO - === Running Scenario: Transfer_Learning ===
+2025-11-29 10:21:50,582 - INFO - -> Transfer_Learning Max HV: 1443927.7850964195
+2025-11-29 10:21:50,582 - INFO - === Running Scenario: Baseline_Standard ===
+2025-11-29 10:21:51,913 - INFO - -> Baseline_Standard Max HV: 1425484.276912692
+2025-11-29 10:21:51,914 - INFO - Data saved to transfer_history.json
+2025-11-29 10:21:52,448 - INFO - Plot saved to /Users/hikimiwada/qamoo/final_results/Option_B_Transfer_20251129_102148/option_b_plot.png

@@ -1,0 +1,7 @@
+2025-11-29 10:27:34,300 - INFO - Initialized experiment: Option_C_Benchmark_Fixed
+2025-11-29 10:27:34,301 - INFO - Saving results to: /Users/hikimiwada/qamoo/final_results/Option_C_Benchmark_Fixed_20251129_102734
+2025-11-29 10:27:34,301 - INFO - Loading 3 graphs...
+2025-11-29 10:27:34,302 - INFO - Combined Graph loaded: 27 nodes, 28 edges
+2025-11-29 10:27:34,302 - INFO - Running NSGA-II (Classical)...
+2025-11-29 10:27:35,402 - INFO - Data saved to classical_front_points.json
+2025-11-29 10:27:35,734 - INFO - Plot saved to /Users/hikimiwada/qamoo/final_results/Option_C_Benchmark_Fixed_20251129_102734/option_c_plot.png
